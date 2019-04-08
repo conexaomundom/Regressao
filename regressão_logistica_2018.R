@@ -106,61 +106,15 @@ acf(devres)
 # está fora do intervalo de confiança com relação a autocorrelação dos 
 # desvioa padronizados, porém como mesmo passando do limite superior do 
 # intervalo de confiança continua a ser uma correlação baixa, próximo de
-# 0.3, talvez não sendo muito preocupante, enquanto os demais lag's
+# 0.3, talvez não sendo muito preocupante, , mas fica a cargo do pesquisador
+# decidir se considera como correlacionados ou não enquanto os demais lag's
 # estão contidos no intervalo de confiança abaixo de $ \vert 0.2 \vert $.
 # Ṕodendo interpretar que os desvios padronizados não são correlacionados.
-
-# Pontos de Alavanca e Influentes
-# Visualizacao Grafica
-
-#Pontos aberrantes
-plot(devres, main = "Gráfico de verificação dos pontos Aberrantes")
-abline(h=-2, col = 2); abline(h=2, col=2)
-which(abs(devres)>2) #idenifica no grafico as observacoes aberrantes
-
-# A partir do gráfico de verificação dos pontos aberrantes e da
-# identificação desses pontos verificamos que os pontos 12, 39, 45 e
-# 52 são pontos aberrantes.
-
-#Identificacao de pontos de alavanca
-n=nrow(dados)
-p = (s$df.null - s$df.residual) # num. de variaveis do modelo (atencao ao Beta_zero))
-
-plot(glm.diag(b)$h, main = "Gráfico de verificação dos pontos de Alavanca")
-abline(h=2*(p/n), col = 2)
-which(glm.diag(b)$h > 2*(p/n))
-
-# A partir do gráfico de verificação dos pontos de Alavanca e da 
-# identificação desses pontos verificamos que os pontos 5,  6, 22, 36,
-# 39, 46, 54 e 56 são pontos de alavanca. Não Podendo então retirar o 
-# ponto 39 do banco porque é um ponto significativo para o modelo.
-
-#Identificacao de pontos de influencia
-plot(glm.diag(b)$cook, main = "Gráfico de verificação dos pontos de Influência")
-abline(h=qchisq(0.05,p)/p, col = 2)
-which(glm.diag(b)$cook > qchisq(0.05,p)/p)
-
-# A partir do gráfico de verificação dos pontos de Influência e da 
-# identificação desses pontos verificamos que apenas o ponto 39 de
-# influência e observando que o ponto 39 também é aberrante e de
-# Alavanca.
-
-# Não podendo então retirar o ponto 39 do banco porque é um ponto 
-# significativo para o modelo.
-
-# Então os pontos de influência foi o ponto 39, os pontos de alavanca 
-# foram 5,  6, 22, 36, 39, 46, 54 e 56 e os pontos Aberrantes foram 12, 
-# 39, 45 e 52, como o ponto 39 é de influência e de alavanca ele não pode
-# ser retirado do modelo porque é um ponto significativo, já os demais
-# pontos Aberrantes 12, 45 e 52 como não são pontos de alavanca nem de
-# influência eles podem ser retirados do modelo porque não são
-# signifcativos. 
-
 
 #Odds Ratio
 xtable(as.table(exp(b$coefficients[-1]))) # Cautela ao rodar este comando
 
-# NÃO SEI O QUE COMENTAR DESSA TABELAAAA
+# Essa é a razão de chances...
 
 fit=fitted(b) # probabilidades estimadas para cada individuo da amostra
 
