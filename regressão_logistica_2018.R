@@ -160,6 +160,8 @@ which(glm.diag(b)$cook > qchisq(0.05,p)/p)
 #Odds Ratio
 xtable(as.table(exp(b$coefficients[-1]))) # Cautela ao rodar este comando
 
+# NÃO SEI O QUE COMENTAR DESSA TABELAAAA
+
 fit=fitted(b) # probabilidades estimadas para cada individuo da amostra
 
 #Curva ROC
@@ -173,6 +175,14 @@ perf <- performance(pred,"tpr","fpr") #Escolha do ponto de corte, TP e FP
 area <- performance(pred,"auc") #Calcula a ?rea sob a curva ROC
 plot(perf, main = " Cruva ROC") #Constroi o gr?fico da curva ROC
 
+# Olhanco para a curva ROC podemos observar a qualidade do ajuste para o modelo,
+# pois é obtido com base nas taxas de erro e acerto do modelo, possibilitando
+# pegar o ponto de corte que maximiza o True Positive e minimize o False 
+# Positive, podendo plotar uma reta que vai do canto superior esquerdo e acabe 
+# no canto inferior direito e ao epgar o ponto em que a reta cruza com a curva é
+# uma boa opção de???? HELP ME PLEASE. 
+# PENSAR UMA FORMA DE IDENTIFICAR COMO PEGAR ESSE PONTO.
+
 #Outra Opcao da ROC
 
 library(Epi)
@@ -181,3 +191,6 @@ ROC(form=PA~as.factor(SEXO)+as.factor(e3)+PESO+IDADE+as.factor(SED),plot="ROC",M
 # Montando a matriz de contingencia
 library(SDMTools)
 confusion.matrix(PA, fit, threshold = 0.5)
+
+# NÃO FUNCIONOU ESSE PACOTE NO MEU PC,ENTÃO NEM SEI A SAÍDA QUANTO MAIS O QUE 
+# COMENTAR DELA.
