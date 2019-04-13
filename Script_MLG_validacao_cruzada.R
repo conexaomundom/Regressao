@@ -22,60 +22,64 @@ names(banco)
 # Rodar modelos MGL's e ver qual eh melhor por validacao cruzada.
 
 # começando a seleção de variáveis ao nível de signiicancia de 10%.
-# modelo gaussiano com função de ligação identidade.
-m_g <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
+# Modelo gaussiano com função de ligação identidade.
+m_gi <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
             Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + 
             Wrist, family = gaussian(link = "identity"), data=banco)
 
-summary(m_g)
+summary(m_gi)
 # retirando a variável Knee com p-valor de 0.94970 no teste t.
-m_g1 <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
+m_gi1 <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
              Abdomen + Hip + Thigh + Ankle + Biceps + Forearm + 
              Wrist, family = gaussian(link = "identity"), data=banco)
-summary(m_g1)
+summary(m_gi1)
 # retirando a variável Chest com p-valor de 0.80454 no teste t.
-m_g2 <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck +  
+m_gi2 <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck +  
               Abdomen + Hip + Thigh + Ankle + Biceps + Forearm + 
               Wrist, family = gaussian(link = "identity"), data=banco)
-summary(m_g2)
+summary(m_gi2)
 # retirando a variável Heigth com p-valor de 0.49280 no teste t.
-m_g3 <- glm(formula = Percent ~ Age + Weigth + Neck +  
+m_gi3 <- glm(formula = Percent ~ Age + Weigth + Neck +  
               Abdomen + Hip + Thigh + Ankle + Biceps + Forearm + 
               Wrist, family = gaussian(link = "identity"), data=banco)
-summary(m_g3)
+summary(m_gi3)
 
 # retirando a variável Ankle com p-valor de 0.39568 no teste t.
-m_g4 <- glm(formula = Percent ~ Age + Weigth + Neck +  
+m_gi4 <- glm(formula = Percent ~ Age + Weigth + Neck +  
               Abdomen + Hip + Thigh + Biceps + Forearm + 
               Wrist, family = gaussian(link = "identity"), data=banco)
-summary(m_g4)
+summary(m_gi4)
 
 # retirando a variável Biceps com p-valor de 0.28878 no teste t.
-m_g5 <- glm(formula = Percent ~ Age + Weigth + Neck +  
+m_gi5 <- glm(formula = Percent ~ Age + Weigth + Neck +  
               Abdomen + Hip + Thigh + Forearm + 
               Wrist, family = gaussian(link = "identity"), data=banco)
-summary(m_g5)
+summary(m_gi5)
 
 # retirando a variável Biceps com p-valor de 0.28878 no teste t.
-m_gf <- glm(formula = Percent ~ Age + Weigth + Neck +  
+m_gif <- glm(formula = Percent ~ Age + Weigth + Neck +  
               Abdomen + Thigh + Forearm + 
               Wrist, family = gaussian(link = "identity"), data=banco)
-summary(m_gf)
+summary(m_gif)
 # E ficou sendo o modelo final passando pelo teste t com 7 variáveis explicativas
 # mais o intercepto sendo siginificativas para o modelo gaussiano com função de 
 # ligação identidade.
 
+## NÃO RODA
+# Modelo gaussiano com função de ligação log.
+# m_gl <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
+#              Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + 
+#              Wrist, family = gaussian(link = "log"), data=banco)
+# summary(m_gl)
 
-# modelo gaussiano com função de ligação log.
-m_g <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
-             Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + 
-             Wrist, family = gaussian(link = "log"), data=banco)
 
-
+## NÃO RODA
 # modelo gaussiano com função de ligação inversa.
-m_g <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
-             Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + 
-             Wrist, family = gaussian(link = "inverse"), data=banco)
+# m_gin <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
+#              Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + 
+#              Wrist, family = gaussian(link = "inverse"), data=banco)
+# summary(m_gin)
+
 
 
 ##
