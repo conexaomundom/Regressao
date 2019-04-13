@@ -80,23 +80,29 @@ summary(m_gif)
 #              Wrist, family = gaussian(link = "inverse"), data=banco)
 # summary(m_gin)
 
+# Não rodam porque dentro do domunio de Percet inclui o 0.
 
 
 ##
 # modelo Gamma com função de ligação inversa.
-m_g <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
+m_gai <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
              Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + 
              Wrist, family = Gamma(link = "inverse"), data=banco)
+summayr(m_gai)
+
+# O dominio do x também não consegue captar o O.
+
 
 # modelo Gamma com função de ligação identidade.
-m_g <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
-             Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + 
-             Wrist, family = Gamma(link = "identity"), data=banco)
+#m_g <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
+#             Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + 
+#             Wrist, family = Gamma(link = "identity"), data=banco)
 
 # modelo Gamma com função de ligação log.
-m_g <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
-             Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + 
-             Wrist, family = Gamma(link = "log"), data=banco)
+#m_g <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
+#             Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + 
+#             Wrist, family = Gamma(link = "log"), data=banco)
+
 
 ##
 # modelo gaussiana  inversa com funcao de ligacao 1/mu^2
