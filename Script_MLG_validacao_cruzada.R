@@ -349,15 +349,77 @@ summary(m_galf)
 
 
 
-##
+## Problemmmmms
 # modelo gaussiana  inversa com funcao de ligacao 1/mu^2
 m_igmu <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
              Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + 
              Wrist, family = inverse.gaussian(link = "1/mu^2"), data=banco)
 summary(m_igmu)
+## Problemmmmms
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # modelo gaussiana  inversa com funcao de ligacao inverse. 
-m_ig_inverse <- glm(formula = Percent ~ Age+Weigth+Heigth+Neck+Chest+Abdomen+Hip+Thigh+Knee+Ankle+Biceps+Forearm+Wrist, family = inverse.gaussian(link = "inverse"), data=banco)
+m_ig_inverse <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest +
+                      Abdomen + Hip + Thigh + Knee + Ankle + Biceps + 
+                      Forearm + Wrist, family = inverse.gaussian(link = "inverse"), data=banco)
+summary(m_ig_inverse)
+
+# Retirando a variável Ankle com p-valor 0.76086 no teste t.
+m_ig_inverse1 <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest +
+                      Abdomen + Hip + Thigh + Knee + Biceps + 
+                      Forearm + Wrist, family = inverse.gaussian(link = "inverse"), data=banco)
+summary(m_ig_inverse1)
+
+# Retirando a variável Heigth com p-valor 0.53979 no teste t.
+m_ig_inverse2 <- glm(formula = Percent ~ Age + Weigth + Neck + Chest +
+                      Abdomen + Hip + Thigh + Knee + Biceps + 
+                      Forearm + Wrist, family = inverse.gaussian(link = "inverse"), data=banco)
+summary(m_ig_inverse2)
+
+# Retirando a variável Heigth com p-valor 0.53979 no teste t.
+m_ig_inverse3 <- glm(formula = Percent ~ Age + Weigth + Neck + 
+                      Abdomen + Hip + Thigh + Knee + Biceps + 
+                      Forearm + Wrist, family = inverse.gaussian(link = "inverse"), data=banco)
+summary(m_ig_inverse3)
+
+# Retirando a variável Knee com p-valor 0.165181 no teste t.
+m_ig_inverse4 <- glm(formula = Percent ~ Age + Weigth + Neck + 
+                      Abdomen + Hip + Thigh + Biceps + 
+                      Forearm + Wrist, family = inverse.gaussian(link = "inverse"), data=banco)
+summary(m_ig_inverse4)
+
+# Retirando a variável Biceps com p-valor 0.131392 no teste t.
+m_ig_inverse5 <- glm(formula = Percent ~ Age + Weigth + Neck + 
+                      Abdomen + Hip + Thigh + 
+                      Forearm + Wrist, family = inverse.gaussian(link = "inverse"), data=banco)
+summary(m_ig_inverse5)
+
+# Retirando a variável Weigth com p-valor 0.117300 no teste t.
+m_ig_inversef <- glm(formula = Percent ~ Age + Neck + 
+                      Abdomen + Hip + Thigh + 
+                      Forearm + Wrist, family = inverse.gaussian(link = "inverse"), data=banco)
+summary(m_ig_inversef)
+# E ficou sendo o modelo final passando pelo teste t com 7 variáveis explicativas
+# mais o intercepto sendo siginificativas para o modelo Inversa Gussiana com função
+# de ligação inversa.
+
+
 
 
 # modelo gaussiana  inversa com funcao de ligacao identity. 
