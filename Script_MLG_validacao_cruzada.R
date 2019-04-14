@@ -302,9 +302,51 @@ summary(m_gaid7)
 
 
 # modelo Gamma com função de ligação log.
-m_g <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
+m_gal <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
              Abdomen + Hip + Thigh + Knee + Ankle + Biceps + Forearm + 
            Wrist, family = Gamma(link = "log"), data=banco)
+summary(m_gal)
+
+# retirando a variável Knee com p-valor de 0.7996 no teste t.
+m_gal1 <- glm(formula = Percent ~ Age + Weigth + Heigth + Neck + Chest + 
+             Abdomen + Hip + Thigh + Ankle + Biceps + Forearm + 
+           Wrist, family = Gamma(link = "log"), data=banco)
+summary(m_gal1)
+
+# retirando o intercepto com p-valor de 0.69277 no teste t.
+m_gal2 <- glm(formula = Percent ~ 0 + Age + Weigth + Heigth + Neck + Chest + 
+             Abdomen + Hip + Thigh + Ankle + Biceps + Forearm + 
+           Wrist, family = Gamma(link = "log"), data=banco)
+summary(m_gal2)
+
+# retirando a variável Chest com p-valor de 0.60877 no teste t.
+m_gal3 <- glm(formula = Percent ~ 0 + Age + Weigth + Heigth + Neck +  
+             Abdomen + Hip + Thigh + Ankle + Biceps + Forearm + 
+           Wrist, family = Gamma(link = "log"), data=banco)
+summary(m_gal3)
+
+
+# retirando a variável Ankle com p-valor de 0.49755 no teste t.
+m_gal4 <- glm(formula = Percent ~ 0 + Age + Weigth + Heigth + Neck +  
+             Abdomen + Hip + Thigh +  Biceps + Forearm + 
+           Wrist, family = Gamma(link = "log"), data=banco)
+summary(m_gal4)
+
+# retirando a variável Heigth com p-valor de 0.30067 no teste t.
+m_gal5 <- glm(formula = Percent ~ 0 + Age + Weigth + Neck +  
+             Abdomen + Hip + Thigh +  Biceps + Forearm + 
+           Wrist, family = Gamma(link = "log"), data=banco)
+summary(m_gal5)
+
+# retirando a variável Biceps com p-valor de 0.12167 no teste t.
+m_galf <- glm(formula = Percent ~ 0 + Age + Weigth + Neck +  
+             Abdomen + Hip + Thigh +  Forearm + 
+           Wrist, family = Gamma(link = "log"), data=banco)
+summary(m_galf)
+
+# E ficou sendo o modelo final passando pelo teste t com 8 variáveis explicativas
+# sendo siginificativas para o modelo Gamma com função de ligação log.
+
 
 
 ##
