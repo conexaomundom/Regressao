@@ -140,11 +140,16 @@ qqnorm(devres); qqline(devres, col=2)
 # de Lilliefors e Shapiro-Wilk, ou seja rejeitamos a hipótese de haver
 # normalidade do desvio resídual.
 
-#Verificar a funÏ„Ï€o de variÎ“ncia
-plot(fit,devres) 
+# Verificar a função de variÎ“ncia
+plot(fit,devres)
+# Avaliando a função de ligação talvez tenha influência dos pontos em fit
+# que estão entre 40 e 50, porém o que podemos dizer que tem como identificar
+# uma tendencia decrescente da variância, que no início é maior e em seguida.
 
-#Verificar a funÏ„Ï€o de LigaÏ„Ï€o
+# Verificar acfunção de LigaÏ„Ï€o
 plot(fit,banco$Percent)
+# Como o gráfico de função de ligação não apresentou ligação 
+# sinalizando que a função de ligação não foi adequada.
 
 #Indep. Erros
 acf(devres)
