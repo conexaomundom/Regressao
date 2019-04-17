@@ -29,44 +29,36 @@ train10 <- banco[-flds[[10]], ]
 cv <- function(banco){
 
 # Modelo com gaussiana com função de ligação identidade.
-m_gif <- glm(formula = Percent ~ Age + Weigth + Neck +  
-               Abdomen + Thigh + Forearm + 
-               Wrist, family = gaussian(link = "identity"), data=banco)
+m1 <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Thigh + 
+          Forearm + Wrist, family = gaussian(link = "identity"), data=banco)
 
 # Modelo com gaussiana com função de ligação log.
-m_glf <- glm(formula = Percent ~ Age + Weigth +  Neck + 
-               Abdomen + Hip + Thigh +  Forearm + 
-               Wrist, family = gaussian(link = "log"), data=banco)
+m2 <- glm(formula = Percent ~ Age + Weigth +  Neck + Abdomen + Hip + Thigh +
+          Forearm + Wrist, family = gaussian(link = "log"), data=banco)
 
+# Modelo com gaussiana com função de ligação inversa.
+m3 <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
+          Forearm + Wrist, family = gaussian(link = "inverse"), data=banco)
 
-m_ginf <- glm(formula = Percent ~ Weigth + 
-                Abdomen + Hip + Thigh + Knee + Forearm + 
-                Wrist, family = gaussian(link = "inverse"), data=banco)
+# Modelo com Gamma com função de ligação inversa.
+m4 <- glm(formula = Percent ~ Age + Weigth + Abdomen + Hip + Thigh + Knee + 
+          Forearm + Wrist, family = Gamma(link = "inverse"), data=banco)
 
+# Modelo com Gamma com função de ligação identidade.
+m5 <- glm(formula = Percent ~ 0 + Age + Neck + Abdomen + Hip + Thigh + 
+          Forearm + Wrist, family = Gamma(link = "identity"), data=banco)
 
-m_gaif <- glm(formula = Percent ~ Age + Weigth + 
-                Abdomen + Hip + Thigh + Knee + Forearm + 
-                Wrist, family = Gamma(link = "inverse"), data=banco)
+# Modelo com inversa gaussiana com função de ligação 1/mu^2.
+m6 <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
+          Forearm , family = inverse.gaussian(link = "1/mu^2"), data=banco)
 
+# Modelo com Gamma com função de ligação log.
+m7 <- glm(formula = Percent ~ 0 + Age + Weigth + Abdomen + Thigh + Knee + 
+          Forearm + Wrist, family = Gamma(link = "log"), data=banco)
 
-m_gaidf <- glm(formula = Percent ~ 0 + Age + Neck + 
-                 Abdomen + Hip + Thigh + Forearm + 
-                 Wrist, family = Gamma(link = "identity"), data=banco)
-
-
-m_igmuf <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
-                 Forearm , family = inverse.gaussian(link = "1/mu^2"), data=banco)
-
-
-m_galf <- glm(formula = y ~ 0+ Age + Weigth + 
-                Abdomen + Thigh + Knee + Forearm + 
-                Wrist, family = Gamma(link = "log"), data=banco)
-
-
-m_ig_inversef <- glm(formula = Percent ~ Age + Weigth + Neck + 
-                       Abdomen + Hip + Thigh + 
-                       Forearm + Wrist, family = inverse.gaussian(link = "inverse"), data=banco)
-
-
+# Modelo com Gamma com função de ligação log.
+m8 <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
+          Forearm + Wrist, family = inverse.gaussian(link = "inverse"),
+          data=banco)
 
 }
