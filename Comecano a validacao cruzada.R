@@ -60,20 +60,23 @@ coef8f <- m8f$coefficients
 ################################################################
 k <- 10
 cv <- 10
+
+# Matrizes que vao receber as méidas das estimativas de rood mean square error
+# a quantidade dessas matrizes 
+rmse1 <- matrix(0,cv,k)
+rmse2 <- matrix(0,cv,k)
+rmse3 <- matrix(0,cv,k)
+rmse4 <- matrix(0,cv,k)
+rmse5 <- matrix(0,cv,k)
+rmse6 <- matrix(0,cv,k)
+rmse7 <- matrix(0,cv,k)
+rmse8 <- matrix(0,cv,k)
 # Contador para rodar as repetições
-
-j <- 1 # for(j in 1:k){
-
-
-# Contador para rodar os folds
-
-i <- 1 # for(i in 1:cv){
+for(j in 1:k){
 
 # Separando os 10 folds.
 require(caret); 
 flds <- createDataPartition(Percent, times = cv, p = 0.2, list = TRUE)
-
-
 
 ################################################################
 # Lista com os elementos separados para treino.
@@ -103,69 +106,70 @@ teste9 <- banco[flds[[9]], ]
 teste10 <- banco[flds[[10]], ]
 mat_teste <- list(teste1, teste2, teste3, teste4, teste5, teste6, teste7, teste8, teste9, teste10)
 
-# Matrizes que vao receber as méidas das estimativas de rood mean square error
-# a quantidade dessas matrizes 
-mrmse1 <- matrix(0,cv,k)
-mrmse2 <- matrix(0,cv,k)
-mrmse3 <- matrix(0,cv,k)
-mrmse4 <- matrix(0,cv,k)
-mrmse5 <- matrix(0,cv,k)
-mrmse6 <- matrix(0,cv,k)
-mrmse7 <- matrix(0,cv,k)
-mrmse8 <- matrix(0,cv,k)
+
+
+t1 <- NULL; t2 <- NULL
+t3 <- NULL; t4 <- NULL
+t1 <- NULL; t6 <- NULL
+t7 <- NULL; t8 <- NULL
+t9 <- NULL; t10 <- NULL
 
 ################################################################
-t1 <- NULL
+# Contador para rodar os folds
+ for(i in 1:cv){
+
 m1 <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Thigh + 
           Forearm + Wrist, family = gaussian(link = "identity"), data=mat_treino[[i]])
 t1 <- predict(m1,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
-mrmse1[i,j] <- sqrt(apply(teste1[1] - t1,2,"mean")^2)
+rmse1[i,j] <- sqrt(apply(teste1[1] - t1,2,"mean")^2)
 
-t2 <- NULL
+
 m2 <- glm(formula = Percent ~ Age + Weigth +  Neck + Abdomen + Hip + Thigh +
           Forearm + Wrist, family = gaussian(link = "log"), data=mat_treino[[i]])
 t2 <- predict(m2,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
-mrmse2[i,j] <- sqrt(apply(teste2[1] - t2,2,"mean")^2)
+rmse2[i,j] <- sqrt(apply(teste2[1] - t2,2,"mean")^2)
 
-t3 <- NULL
+
 m3 <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
           Forearm + Wrist, family = gaussian(link = "inverse"), data=mat_treino[[i]])
 t3 <- predict(m3,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction") 
-mrmse3[i,j] <- sqrt(apply(teste3[1] - t3,2,"mean")^2)
+rmse3[i,j] <- sqrt(apply(teste3[1] - t3,2,"mean")^2)
 
-t4 <- NULL
+
 m4 <- glm(formula = Percent ~ Age + Weigth + Abdomen + Hip + Thigh + Knee + 
           Forearm + Wrist, family = Gamma(link = "inverse"), data=mat_treino[[i]])
 t4 <- predict(m4,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
-mrmse4[i,j] <- sqrt(apply(teste4[1] - t4,2,"mean")^2)
+rmse4[i,j] <- sqrt(apply(teste4[1] - t4,2,"mean")^2)
 
-t5 <- NULL
+
 m5 <- glm(formula = Percent ~ 0 + Age + Neck + Abdomen + Hip + Thigh + 
           Forearm + Wrist, family = Gamma(link = "identity"), data=mat_treino[[i]])
 t5 <- predict(m5,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
-mrmse5[i,j] <- sqrt(apply(teste5[1] - t5,2,"mean")^2)
+rmse5[i,j] <- sqrt(apply(teste5[1] - t5,2,"mean")^2)
 
-t6 <- NULL
+
 m6 <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
           Forearm , family = inverse.gaussian(link = "1/mu^2"), data=mat_treino[[i]])
 t6 <- predict(m6,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
-mrmse6[i,j] <- sqrt(apply(teste6[1] - t6,2,"mean")^2)
+rmse6[i,j] <- sqrt(apply(teste6[1] - t6,2,"mean")^2)
 
-t7 <- NULL
+
 m7 <- glm(formula = Percent ~ 0 + Age + Weigth + Abdomen + Thigh + Knee + 
           Forearm + Wrist, family = Gamma(link = "log"), data=mat_treino[[i]])
 t7 <- predict(m7,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
-mrmse7[i,j] <- sqrt(apply(teste7[1] - t7,2,"mean")^2)
+rmse7[i,j] <- sqrt(apply(teste7[1] - t7,2,"mean")^2)
 
-t8 <- NULL
+
 m8 <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
           Forearm + Wrist, family = inverse.gaussian(link = "inverse"),
           data=mat_treino[[i]])
 t8 <- predict(m8,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
-mrmse8[i,j] <- sqrt(apply(teste8[1] - t8,2,"mean")^2)
+rmse8[i,j] <- sqrt(apply(teste8[1] - t8,2,"mean")^2)
 
-# }
+ }
+medias <- c(mean(rmse1), mean(rmse2), mean(rmse3), mean(rmse4),mean(rmse5), mean(rmse6),
+             mean(rmse7), mean(rmse8))
 
-#}
-
-
+}
+which(medias == min(medias))
+# O melhor modelo foi o gaussiana inversa.
