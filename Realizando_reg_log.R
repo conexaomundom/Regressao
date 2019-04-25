@@ -55,66 +55,6 @@ xtablesummary((modelo3))
 # Seleão de variáveis realizada e o modelo final ficou com 4 variáveis 
 # explicativas mais o intercepto.
 
-b <- modelo3
-
-#Overall Goodness of fit
-s = summary(b); 
-desvio=modelo$deviance
-q.quadr=qchisq(0.90,modelo$df.residual)
-
-desvio<q.quadr
-# Agora verificando se o modelo é adequado, e sim o modelo dresultou em 
-# ser adequado sim.
-
-# Agora fazendo a analise de reíduos e diagnóstico.
-
-#Valor ajustado e desvio residual
-fit = fitted(b)
-library(boot)
-devres = glm.diag(b)$rd
-
-#Grafico de Normalidade
-library(nortest)
-qqnorm(devres); qqline(devres, col=2)
-
-# A partir do QQ Plot dos resíduos padronizados podemos observar que os 
-# pontos estão um pouco distorcidos da reta de normalidade, podendo 
-# assim suspeitar de uma não normalidade estar presente nos resíduos
-# padronizados, agora vamos fazer o teste de Lilliefors e de Shapiro
-# Wilks para ter uma conclusão mais precisa.
-
-
-lillie.test(devres)
-shapiro.test(devres)
-
-# E em ambos os testes de normalidade H0 foi rejeitada, foi rejeitada a 
-# hipótese de normalidade nos desvios padronizados com p-valores de 
-# < 2.2e-16 e < 2.2e-16 no teste de Lilliefors e do Shapiro-WIlk 
-# repspectivamente, podendo afirmar assim que os resíduos padronizados
-# não seguem a normalidade.
-
-#Verificar a funÏ„Ï€o de variÎ“ncia
-plot(fit,devres, main = "Função de variância") 
-
-# É possível observar tendÊncias decrescentes
-# muito claras.
-#Verificar a funÏ„Ï€o de LigaÏ„Ï€o
-plot(fit,Survived,main = "Função de ligação")
-
-# Perfeito, assuminfo 0 e 1.
-
-#Indep. Erros
-acf(devres)
-
-# Analisando o ACF dos desvios padronizados podemos ver que o sétimo lag 
-# está fora do intervalo de confiança com relação a autocorrelação dos 
-# desvioa padronizados, porém como mesmo passando do limite superior do 
-# intervalo de confiança continua a ser uma correlação baixa, próximo de
-# 0.3, talvez não sendo muito preocupante, , mas fica a cargo do pesquisador
-# decidir se considera como correlacionados ou não enquanto os demais lag's
-# estão contidos no intervalo de confiança abaixo de $ \vert 0.2 \vert $.
-# Ṕodendo interpretar que os desvios padronizados não são correlacionados.
-
 #Odds Ratio
 xtable(as.table(exp(b$coefficients[-1]))) # Cautela ao rodar este comando
 
