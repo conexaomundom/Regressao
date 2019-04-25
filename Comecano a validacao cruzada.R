@@ -1,7 +1,8 @@
 # Começando a realizar a validação cruzada, separando o banco para
 # o conjunto de treinamento e o conjunto de teste.
 install.packages("caret")
-
+install.packages("MLmatrics")
+library(MLmatrics)
 
 rm(list = ls())
 
@@ -71,6 +72,34 @@ rmse5 <- matrix(0,cv,k)
 rmse6 <- matrix(0,cv,k)
 rmse7 <- matrix(0,cv,k)
 rmse8 <- matrix(0,cv,k)
+
+rae1 <- matrix(0,cv,k)
+rae2 <- matrix(0,cv,k)
+rae3 <- matrix(0,cv,k)
+rae4 <- matrix(0,cv,k)
+rae5 <- matrix(0,cv,k)
+rae6 <- matrix(0,cv,k)
+rae7 <- matrix(0,cv,k)
+rae8 <- matrix(0,cv,k)
+
+mae1 <- matrix(0,cv,k)
+mae2 <- matrix(0,cv,k)
+mae3 <- matrix(0,cv,k)
+mae4 <- matrix(0,cv,k)
+mae5 <- matrix(0,cv,k)
+mae6 <- matrix(0,cv,k)
+mae7 <- matrix(0,cv,k)
+mae8 <- matrix(0,cv,k)
+
+rrse1 <- matrix(0,cv,k)
+rrse2 <- matrix(0,cv,k)
+rrse3 <- matrix(0,cv,k)
+rrse4 <- matrix(0,cv,k)
+rrse5 <- matrix(0,cv,k)
+rrse6 <- matrix(0,cv,k)
+rrse7 <- matrix(0,cv,k)
+rrse8 <- matrix(0,cv,k)
+
 # Contador para rodar as repetições
 for(j in 1:k){
 
@@ -120,57 +149,57 @@ t9 <- NULL; t10 <- NULL
 
 m1 <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Thigh + 
           Forearm + Wrist, family = gaussian(link = "identity"), data=mat_treino[[i]])
-t1 <- predict(m1,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
+t1 <- predict(m1, newdata=data.frame(mat_teste[[i]]), type = "response")
 rmse1[i,j] <- sqrt(apply(mat_teste[[i]][i] -  t1,2,"mean")^2)
 
 
 m2 <- glm(formula = Percent ~ Age + Weigth +  Neck + Abdomen + Hip + Thigh +
           Forearm + Wrist, family = gaussian(link = "log"), data=mat_treino[[i]])
-t2 <- predict(m2,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
+t2 <- predict(m2, newdata=data.frame(mat_teste[[i]]), type = "response")
 rmse2[i,j] <- sqrt(apply(mat_teste[[i]][i] - t2,2,"mean")^2)
 
 
 m3 <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
           Forearm + Wrist, family = gaussian(link = "inverse"), data=mat_treino[[i]])
-t3 <- predict(m3,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction") 
+t3 <- predict(m3, newdata=data.frame(mat_teste[[i]]), type = "response")
 rmse3[i,j] <- sqrt(apply(mat_teste[[i]][i] - t3,2,"mean")^2)
 
 
 m4 <- glm(formula = Percent ~ Age + Weigth + Abdomen + Hip + Thigh + Knee + 
           Forearm + Wrist, family = Gamma(link = "inverse"), data=mat_treino[[i]])
-t4 <- predict(m4,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
+t4 <- predict(m4, newdata=data.frame(mat_teste[[i]]), type = "response")
 rmse4[i,j] <- sqrt(apply(mat_teste[[i]][i] - t4,2,"mean")^2)
 
 
 m5 <- glm(formula = Percent ~ 0 + Age + Neck + Abdomen + Hip + Thigh + 
           Forearm + Wrist, family = Gamma(link = "identity"), data=mat_treino[[i]])
-t5 <- predict(m5,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
+t5 <- predict(m5, newdata=data.frame(mat_teste[[i]]), type = "response")
 rmse5[i,j] <- sqrt(apply(mat_teste[[i]][i] - t5,2,"mean")^2)
 
 
 m6 <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
           Forearm , family = inverse.gaussian(link = "1/mu^2"), data=mat_treino[[i]])
-t6 <- predict(m6,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
+t6 <- predict(m6, newdata=data.frame(mat_teste[[i]]), type = "response")
 rmse6[i,j] <- sqrt(apply(mat_teste[[i]][i] - t6,2,"mean")^2)
 
 
 m7 <- glm(formula = Percent ~ 0 + Age + Weigth + Abdomen + Thigh + Knee + 
           Forearm + Wrist, family = Gamma(link = "log"), data=mat_treino[[i]])
-t7 <- predict(m7,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
+t7 <- predict(m7, newdata=data.frame(mat_teste[[i]]), type = "response")
 rmse7[i,j] <- sqrt(apply(mat_teste[[i]][i] - t7,2,"mean")^2)
 
 
 m8 <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
-          Forearm + Wrist, family = inverse.gaussian(link = "inverse"),
-          data=mat_treino[[i]])
-t8 <- predict(m8,newdata=data.frame(mat_teste[[i]]), level = 0.95, interval="prediction")
+          Forearm + Wrist, family = inverse.gaussian(link = "inverse"), data=mat_treino[[i]])
+t8 <- predict(m8, newdata=data.frame(mat_teste[[i]]), type = "response")
 rmse8[i,j] <- sqrt(apply(mat_teste[[i]][i] - t8,2,"mean")^2)
 
  }
-medias <- c(mean(rmse1), mean(rmse2), mean(rmse3), mean(rmse4),mean(rmse5), mean(rmse6),
+medias <- c(mean(rmse1), mean(rmse2), mean(rmse3), mean(rmse4),mean(rmse5),
              mean(rmse7), mean(rmse8))
 
 }
 which(medias == min(medias))
 # O melhor modelo foi o gaussiana inversa.
-
+library(MLmetrics)
+?MLmetrics
