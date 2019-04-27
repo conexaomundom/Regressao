@@ -2,7 +2,7 @@
 # o conjunto de treinamento e o conjunto de teste.
 install.packages("caret")
 install.packages("MLmatrics")
-library(MLmatrics)
+library(MLmetrics)
 
 rm(list = ls())
 
@@ -56,6 +56,11 @@ m8f <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
 coef8f <- m8f$coefficients
 
 
+rmse <- function(y,y_hat){ sqrt(mean((y - y_hat)^2)) }
+rae <- function(y, y_hat){ sum(abs(y_hat - y)) / sum(abs(mean(y) - y)) }
+rrse <- function(y, y_hat){ sum((y_hat - y)^2) / sum((mean(y) - y)^2) }
+mae <- function(y, y_hat){ sum( abs(y - y_hat)) /length(y) }
+
 ################################################################
 # A minha repetição começa aqui.
 ################################################################
@@ -72,6 +77,7 @@ rmse5 <- matrix(0,cv,k)
 rmse6 <- matrix(0,cv,k)
 rmse7 <- matrix(0,cv,k)
 rmse8 <- matrix(0,cv,k)
+m_rmse <- list(c(rmse1,rmse2,rmse3,rmse4,rmse5,rmse6,rmse7,rmse8))
 
 rae1 <- matrix(0,cv,k)
 rae2 <- matrix(0,cv,k)
@@ -81,6 +87,8 @@ rae5 <- matrix(0,cv,k)
 rae6 <- matrix(0,cv,k)
 rae7 <- matrix(0,cv,k)
 rae8 <- matrix(0,cv,k)
+m_rae <- list(c(rae1,rae2,rae3,rae4,rae5,rae6,rae7,rae8))
+
 
 mae1 <- matrix(0,cv,k)
 mae2 <- matrix(0,cv,k)
@@ -90,6 +98,7 @@ mae5 <- matrix(0,cv,k)
 mae6 <- matrix(0,cv,k)
 mae7 <- matrix(0,cv,k)
 mae8 <- matrix(0,cv,k)
+m_mae <- list(c(mae1,mae2,mae3,mae4,mae5,mae6,mae7,mae8))
 
 rrse1 <- matrix(0,cv,k)
 rrse2 <- matrix(0,cv,k)
@@ -99,7 +108,10 @@ rrse5 <- matrix(0,cv,k)
 rrse6 <- matrix(0,cv,k)
 rrse7 <- matrix(0,cv,k)
 rrse8 <- matrix(0,cv,k)
+m_rrse <- list(c(rrse1,rrse2,rrse3,rrse4,rrse5,rrse6,rrse7,rrse8))
 
+al <- list(c(m_rmse,m_rae,m_mae,m_rrse))
+####################################################################
 # Contador para rodar as repetições
 for(j in 1:k){
 
@@ -150,56 +162,79 @@ t9 <- NULL; t10 <- NULL
 m1 <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Thigh + 
           Forearm + Wrist, family = gaussian(link = "identity"), data=mat_treino[[i]])
 t1 <- predict(m1, newdata=data.frame(mat_teste[[i]]), type = "response")
-rmse1[i,j] <- sqrt(apply(mat_teste[[i]][i] -  t1,2,"mean")^2)
-
+rmse1[i,j] <- RMSE(t1,mat_teste[[i]][1])
+rae1[i,j] <- rae(t1,mat_teste[[i]][1])
+mae1[i,j] <- mae(t1,mat_teste[[i]][1])
+rrse1[i,j] <- rrse(t1,mat_teste[[i]][1])
 
 m2 <- glm(formula = Percent ~ Age + Weigth +  Neck + Abdomen + Hip + Thigh +
           Forearm + Wrist, family = gaussian(link = "log"), data=mat_treino[[i]])
 t2 <- predict(m2, newdata=data.frame(mat_teste[[i]]), type = "response")
-rmse2[i,j] <- sqrt(apply(mat_teste[[i]][i] - t2,2,"mean")^2)
+rmse2[i,j] <- RMSE(t2,mat_teste[[i]][1])
+rae2[i,j] <- rae(t2,mat_teste[[i]][1])
+mae2[i,j] <- mae(t2,mat_teste[[i]][1])
+rrse2[i,j] <- rrse(t2,mat_teste[[i]][1])
 
 
 m3 <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
           Forearm + Wrist, family = gaussian(link = "inverse"), data=mat_treino[[i]])
 t3 <- predict(m3, newdata=data.frame(mat_teste[[i]]), type = "response")
-rmse3[i,j] <- sqrt(apply(mat_teste[[i]][i] - t3,2,"mean")^2)
+rmse3[i,j] <- RMSE(t3,mat_teste[[i]][1])
+rae3[i,j] <- rae(t3,mat_teste[[i]][1])
+mae3[i,j] <- mae(t3,mat_teste[[i]][1])
+rrse3[i,j] <- rrse(t3,mat_teste[[i]][1])
 
 
 m4 <- glm(formula = Percent ~ Age + Weigth + Abdomen + Hip + Thigh + Knee + 
           Forearm + Wrist, family = Gamma(link = "inverse"), data=mat_treino[[i]])
 t4 <- predict(m4, newdata=data.frame(mat_teste[[i]]), type = "response")
-rmse4[i,j] <- sqrt(apply(mat_teste[[i]][i] - t4,2,"mean")^2)
+rmse4[i,j] <- RMSE(t1,mat_teste[[i]][1])
+rae4[i,j] <- rae(t4,mat_teste[[i]][1])
+mae4[i,j] <- mae(t4,mat_teste[[i]][1])
+rrse4[i,j] <- rrse(t4,mat_teste[[i]][1])
 
 
 m5 <- glm(formula = Percent ~ 0 + Age + Neck + Abdomen + Hip + Thigh + 
           Forearm + Wrist, family = Gamma(link = "identity"), data=mat_treino[[i]])
 t5 <- predict(m5, newdata=data.frame(mat_teste[[i]]), type = "response")
-rmse5[i,j] <- sqrt(apply(mat_teste[[i]][i] - t5,2,"mean")^2)
+rmse5[i,j] <- RMSE(t5,mat_teste[[i]][1])
+rae5[i,j] <- rae(t5,mat_teste[[i]][1])
+mae5[i,j] <- mae(t5,mat_teste[[i]][1])
+rrse5[i,j] <- rrse(t5,mat_teste[[i]][1])
 
-
-m6 <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
-          Forearm , family = inverse.gaussian(link = "1/mu^2"), data=mat_treino[[i]])
-t6 <- predict(m6, newdata=data.frame(mat_teste[[i]]), type = "response")
-rmse6[i,j] <- sqrt(apply(mat_teste[[i]][i] - t6,2,"mean")^2)
+# novamente reolhar quais modelos passaram 
+# m6 <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
+#           Forearm , family = inverse.gaussian(link = "1/mu^2"), data=mat_treino[[i]])
+# t6 <- predict(m6, newdata=data.frame(mat_teste[[i]]), type = "response")
+# rmse6[i,j] <- RMSE(t6,mat_teste[[i]][1])
+# rae6[i,j] <- rae(t6,mat_teste[[i]][1])
+# mae6[i,j] <- mae(t6,mat_teste[[i]][1])
+# rrse6[i,j] <- rrse(t6,mat_teste[[i]][1])
 
 
 m7 <- glm(formula = Percent ~ 0 + Age + Weigth + Abdomen + Thigh + Knee + 
           Forearm + Wrist, family = Gamma(link = "log"), data=mat_treino[[i]])
 t7 <- predict(m7, newdata=data.frame(mat_teste[[i]]), type = "response")
-rmse7[i,j] <- sqrt(apply(mat_teste[[i]][i] - t7,2,"mean")^2)
+rmse7[i,j] <- sqrt(mae(t7,mat_teste[[i]][1]))
+rae7[i,j] <- rae(t7,mat_teste[[i]][1])
+mae7[i,j] <- mae(t7,mat_teste[[i]][1])
+rrse7[i,j] <- rrse(t7,mat_teste[[i]][1])
 
 
 m8 <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
           Forearm + Wrist, family = inverse.gaussian(link = "inverse"), data=mat_treino[[i]])
 t8 <- predict(m8, newdata=data.frame(mat_teste[[i]]), type = "response")
-rmse8[i,j] <- sqrt(apply(mat_teste[[i]][i] - t8,2,"mean")^2)
+rmse8[i,j] <- RMSE(t8,mat_teste[[i]][1])
+rae8[i,j] <- rae(t8,mat_teste[[i]][1])
+mae8[i,j] <- mae(t8,mat_teste[[i]][1])
+rrse8[i,j] <- rrse(t8,mat_teste[[i]][1])
 
  }
-medias <- c(mean(rmse1), mean(rmse2), mean(rmse3), mean(rmse4),mean(rmse5),
-             mean(rmse7), mean(rmse8))
-
 }
-which(medias == min(medias))
+
+m_rmse <- appy(c(rmse1,rmse2,rmse3,rmse4,rmse5,rmse6,rmse7,rmse8))
+m_rae <- list(c(rae1,rae2,rae3,rae4,rae5,rae6,rae7,rae8))
+m_mae <- list(c(mae1,mae2,mae3,mae4,mae5,mae6,mae7,mae8))
+
 # O melhor modelo foi o gaussiana inversa.
-library(MLmetrics)
-?MLmetrics
+
