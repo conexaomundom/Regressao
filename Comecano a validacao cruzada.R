@@ -41,14 +41,15 @@ coef4f <- m4f$coefficients
 m5f <- glm(formula = Percent ~ 0 + Age + Neck + Abdomen + Hip + Thigh + 
             Forearm + Wrist, family = Gamma(link = "identity"), data=banco)
 coef5f <- m5f$coefficients
-# Modelo com inversa gaussiana com função de ligação 1/mu^2.
-m6f <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
-            Forearm , family = inverse.gaussian(link = "1/mu^2"), data=banco)
-coef6f <- m6f$coefficients
+
 # Modelo com Gamma com função de ligação log.
-m7f <- glm(formula = Percent ~ 0 + Age + Weigth + Abdomen + Thigh + Knee + 
+m6f <- glm(formula = Percent ~ 0 + Age + Weigth + Abdomen + Thigh + Knee + 
             Forearm + Wrist, family = Gamma(link = "log"), data=banco)
-coef7f <- m7f$coefficients
+coef6f <- m7f$coefficients
+# Modelo com inversa gaussiana com função de ligação 1/mu^2.
+m7f <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
+             Forearm , family = inverse.gaussian(link = "1/mu^2"), data=banco)
+coef7f <- m6f$coefficients
 # Modelo com Gamma com função de ligação log.
 m8f <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
             Forearm + Wrist, family = inverse.gaussian(link = "inverse"),
@@ -202,23 +203,22 @@ rae5[i,j] <- rae(t5,mat_teste[[i]][1])
 mae5[i,j] <- mae(t5,mat_teste[[i]][1])
 rrse5[i,j] <- rrse(t5,mat_teste[[i]][1])
 
-# novamente reolhar quais modelos passaram 
-# m6 <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
-#           Forearm , family = inverse.gaussian(link = "1/mu^2"), data=mat_treino[[i]])
-# t6 <- predict(m6, newdata=data.frame(mat_teste[[i]]), type = "response")
-# rmse6[i,j] <- RMSE(t6,mat_teste[[i]][1])
-# rae6[i,j] <- rae(t6,mat_teste[[i]][1])
-# mae6[i,j] <- mae(t6,mat_teste[[i]][1])
-# rrse6[i,j] <- rrse(t6,mat_teste[[i]][1])
-
-
-m7 <- glm(formula = Percent ~ 0 + Age + Weigth + Abdomen + Thigh + Knee + 
+m6 <- glm(formula = Percent ~ 0 + Age + Weigth + Abdomen + Thigh + Knee + 
           Forearm + Wrist, family = Gamma(link = "log"), data=mat_treino[[i]])
-t7 <- predict(m7, newdata=data.frame(mat_teste[[i]]), type = "response")
-rmse7[i,j] <- sqrt(mae(t7,mat_teste[[i]][1]))
-rae7[i,j] <- rae(t7,mat_teste[[i]][1])
-mae7[i,j] <- mae(t7,mat_teste[[i]][1])
-rrse7[i,j] <- rrse(t7,mat_teste[[i]][1])
+t6 <- predict(m7, newdata=data.frame(mat_teste[[i]]), type = "response")
+rmse6[i,j] <- sqrt(mae(t6,mat_teste[[i]][1]))
+rae6[i,j] <- rae(t6,mat_teste[[i]][1])
+mae6[i,j] <- mae(t6,mat_teste[[i]][1])
+rrse6[i,j] <- rrse(t6,mat_teste[[i]][1])
+
+# novamente reolhar quais modelos passaram 
+m6 <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
+         Forearm, family = inverse.gaussian(link = "1/mu^2"), data=mat_treino[[i]])
+t6 <- predict(m6, newdata=data.frame(mat_teste[[i]]), type = "response")
+rmse6[i,j] <- RMSE(t6,mat_teste[[i]][1])
+rae6[i,j] <- rae(t6,mat_teste[[i]][1])
+mae6[i,j] <- mae(t6,mat_teste[[i]][1])
+rrse6[i,j] <- rrse(t6,mat_teste[[i]][1])
 
 
 m8 <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
