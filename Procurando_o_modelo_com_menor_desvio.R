@@ -9,8 +9,9 @@ head(banco)
 attach(banco)
 names(banco)
 typeof(banco)
-
-as.matrix(banco)
+banco[182, ]
+banco$Percent <- banco$Percent + 10
+banco
 
 
 # Como a variável resposta é continua e não é contagem, podemos usar 
@@ -26,42 +27,35 @@ as.matrix(banco)
 
 # Pegando os modelos finais e fazendo o teste de aqueção global neles.
 
-m_gif <- glm(formula = y ~ Age + Weigth + Neck +  
-               Abdomen + Thigh + Forearm + 
+m_gif <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Thigh + Forearm + 
                Wrist, family = gaussian(link = "identity"), data=banco)
 s1 <- summary(m_gif)
 
-m_glf <- glm(formula = y ~ Age + Weigth +  Neck + 
-               Abdomen + Hip + Thigh +  Forearm + 
+m_glf <- glm(formula = Percent ~ Age + Weigth +  Neck + Abdomen + Hip + Thigh +  Forearm + 
                Wrist, family = gaussian(link = "log"), data=banco)
 s2 <- summary(m_glf)
 
-m_ginf <- glm(formula = y ~ Weigth + 
-                Abdomen + Hip + Thigh + Knee + Forearm + 
+m_ginf <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + Forearm + 
                 Wrist, family = gaussian(link = "inverse"), data=banco)
 s3 <- summary(m_ginf)
 
-m_gaif <- glm(formula = y ~ Age + Weigth + 
-                Abdomen + Hip + Thigh + Knee + Forearm + 
+m_gaif <- glm(formula = Percent ~ Age + Weigth + Abdomen + Hip + Thigh + Knee + Forearm + 
                 Wrist, family = Gamma(link = "inverse"), data=banco)
 s4 <- summary(m_gaif)
 
-m_gaidf <- glm(formula = y ~ 0 + Age + Neck + 
-                 Abdomen + Hip + Thigh + Forearm + 
+m_gaidf <- glm(formula = Percent ~ 0 + Age + Neck + Abdomen + Hip + Thigh + Forearm + 
                  Wrist, family = Gamma(link = "identity"), data=banco)
 s5 <- summary(m_gaidf)
 
-m_igmuf <- glm(formula = y ~ Weigth + Abdomen + Hip + Thigh + Knee + 
+m_igmuf <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
                  Forearm , family = inverse.gaussian(link = "1/mu^2"), data=banco)
 s6 <- summary(m_igmuf)
 
-m_galf <- glm(formula = y ~ 0+ Age + Weigth + 
-                Abdomen + Thigh + Knee + Forearm + 
+m_galf <- glm(formula = Percent ~ 0+ Age + Weigth + Abdomen + Thigh + Knee + Forearm + 
                 Wrist, family = Gamma(link = "log"), data=banco)
 s7 <- summary(m_galf)
 
-m_ig_inversef <- glm(formula = y ~ Age + Weigth + Neck + 
-                       Abdomen + Hip + Thigh + 
+m_ig_inversef <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh + 
                        Forearm + Wrist, family = inverse.gaussian(link = "inverse"), data=banco)
 s8 <- summary(m_ig_inversef)
 
