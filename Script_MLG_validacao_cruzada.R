@@ -10,9 +10,6 @@ attach(banco)
 names(banco)
 typeof(banco)
 
-teste <- unlist(banco)
-as.matrix(banco)
-
 # Avaliando a variável y,no caso a variável Percent, que tem uma observação que é 0
 # e isso tem bloqueado que diversos outros modelos possam rodar.
 # Dado essa situação uma alternativa é somar uma constante. Para não apenas
@@ -20,10 +17,16 @@ as.matrix(banco)
 # olhar sua média, sua mediana e avalar qual dessas medidas de posição seria mais
 # adequada pra somar. ou apenas somar um 10.
 
-y <- Percent
-y <- y + 10
+banco[182, ]
+banco$Percent <- banco$Percent + 10
+banco
 
-Percent <- y
+# Avaliando a variável y,no caso a variável Percent, que tem uma observação que é 0
+# e isso tem bloqueado que diversos outros modelos possam rodar.
+# Dado essa situação uma alternativa é somar uma constante. Para não apenas
+# sair somando sem fundo nem nexo a ideia e avaliar como se comporta a variável Percent
+# olhar sua média, sua mediana e avalar qual dessas medidas de posição seria mais
+# adequada pra somar. ou apenas somar um 10.
 
 # Como a variável resposta é continua e não é contagem, podemos usar 
 # as distribuições gaussiana, Gamma, inverse.gaussian
