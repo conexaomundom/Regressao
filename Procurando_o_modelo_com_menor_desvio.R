@@ -55,17 +55,25 @@ m_gaidf <- glm(formula = Percent ~ 0 + Age + Neck + Abdomen + Hip + Thigh + Fore
                  Wrist, family = Gamma(link = "identity"), data=banco)
 s5 <- summary(m_gaidf)
 
-m_igmuf <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
-                 Forearm , family = inverse.gaussian(link = "1/mu^2"), data=banco)
-s6 <- summary(m_igmuf)
-
 m_galf <- glm(formula = Percent ~ 0+ Age + Weigth + Abdomen + Thigh + Knee + Forearm + 
                 Wrist, family = Gamma(link = "log"), data=banco)
-s7 <- summary(m_galf)
+s6 <- summary(m_galf)
+
+m_igmuf <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
+                 Forearm , family = inverse.gaussian(link = "1/mu^2"), data=banco)
+s7 <- summary(m_igmuf)
 
 m_ig_inversef <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh + 
                        Forearm + Wrist, family = inverse.gaussian(link = "inverse"), data=banco)
 s8 <- summary(m_ig_inversef)
+
+m_iglog <- glm(formula = Percent ~ Age + Neck + Abdomen + Hip + Thigh + 
+                Forearm + Wrist, family = inverse.gaussian(link = "log"), data=banco)
+s9 <- summary(m_iglog)
+
+m_igid <- glm(formula = Percent ~ 0 +  Age + Neck + Abdomen + Hip + Thigh + 
+               Forearm + Wrist, family = inverse.gaussian(link = "identity"), data=banco)
+s10 <- summary(m_igid)
 
 #Desvio escalonado do ajuste para validaÏ„Ï€o do modelo
 desvio1 = s1$deviance/s1$dispersion
@@ -76,8 +84,8 @@ desvio5 = s5$deviance/s5$dispersion
 desvio6 = s6$deviance/s6$dispersion 
 desvio7 = s7$deviance/s7$dispersion 
 desvio8 = s8$deviance/s8$dispersion 
-
-
+desvio9 = s9$deviance/s9$dispersion 
+desvio10 = s10$deviance/s10$dispersion 
 
 #q.quadr com n-p graus de liberdade, onde p Î˜ o nÂ·mero de parÎ“metros do modelo
 
@@ -89,7 +97,8 @@ q.quadr5 = qchisq(0.95, s5$df.residual)
 q.quadr6 = qchisq(0.95, s6$df.residual)
 q.quadr7 = qchisq(0.95, s7$df.residual)
 q.quadr8 = qchisq(0.95, s8$df.residual)
-
+q.quadr9 = qchisq(0.95, s9$df.residual)
+q.quadr10 = qchisq(0.95, s10$df.residual)
 
 # Teste global do ajuste do modelo
 
@@ -98,9 +107,11 @@ desvio2 < q.quadr2 # T
 desvio3 < q.quadr3 # T
 desvio4 < q.quadr4 # T
 desvio5 < q.quadr5 # T
-desvio6 < q.quadr6 # F
-desvio7 < q.quadr7 # T
+desvio6 < q.quadr6 # T
+desvio7 < q.quadr7 # F
 desvio8 < q.quadr8 # T
+desvio9 < q.quadr9 # T
+desvio10 < q.quadr10 # T
 
 desvio1
 desvio2
@@ -109,6 +120,19 @@ desvio4
 desvio5
 desvio7
 desvio8
+desvio9
+desvio10
+uni <- c(desvio1,
+         desvio2,
+         desvio3,
+         desvio4,
+         desvio5,
+         desvio7,
+         desvio8,
+         desvio9,
+         desvio10)
+
+which(uni == min(uni))
 
 # O menor desvio foi o modelo com a distribuição Gaussiana com função de
 # ligação log e com esse modelo que vamos realizar a análise de resíduos e
