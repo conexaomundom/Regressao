@@ -45,16 +45,27 @@ coef5f <- m5f$coefficients
 # Modelo com Gamma com função de ligação log.
 m6f <- glm(formula = Percent ~ 0 + Age + Weigth + Abdomen + Thigh + Knee + 
             Forearm + Wrist, family = Gamma(link = "log"), data=banco)
-coef6f <- m7f$coefficients
+coef6f <- m6f$coefficients
 # Modelo com inversa gaussiana com função de ligação 1/mu^2.
-m7f <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
-             Forearm , family = inverse.gaussian(link = "1/mu^2"), data=banco)
-coef7f <- m6f$coefficients
-# Modelo com Gamma com função de ligação log.
-m8f <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
+# m7f <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
+#             Forearm , family = inverse.gaussian(link = "1/mu^2"), data=banco)
+# coef7f <- m7f$coefficients
+# Modelo com Gamma com função de ligação inversa.
+m7f <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
             Forearm + Wrist, family = inverse.gaussian(link = "inverse"),
            data=banco)
-coef8f <- m8f$coefficients
+coef7f <- m8f$coefficients
+# Modelo com Gamma com função de ligação identidade.
+m8f <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
+             Forearm + Wrist, family = inverse.gaussian(link = "identity"),
+           data=banco)
+coef8f <- m9f$coefficients
+# Modelo com Gamma com função de ligação identidade.
+m9f <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
+             Forearm + Wrist, family = inverse.gaussian(link = "log"),
+           data=banco)
+coef9f <- m10f$coefficients
+
 
 
 rmse <- function(y,y_hat){ sqrt(mean((y - y_hat)^2)) }
@@ -78,7 +89,8 @@ rmse5 <- matrix(0,cv,k)
 rmse6 <- matrix(0,cv,k)
 rmse7 <- matrix(0,cv,k)
 rmse8 <- matrix(0,cv,k)
-m_rmse <- list(c(rmse1,rmse2,rmse3,rmse4,rmse5,rmse6,rmse7,rmse8))
+rmse9 <- matrix(0,cv,k)
+
 
 rae1 <- matrix(0,cv,k)
 rae2 <- matrix(0,cv,k)
@@ -88,7 +100,8 @@ rae5 <- matrix(0,cv,k)
 rae6 <- matrix(0,cv,k)
 rae7 <- matrix(0,cv,k)
 rae8 <- matrix(0,cv,k)
-m_rae <- list(c(rae1,rae2,rae3,rae4,rae5,rae6,rae7,rae8))
+rae9 <- matrix(0,cv,k)
+
 
 
 mae1 <- matrix(0,cv,k)
@@ -99,7 +112,8 @@ mae5 <- matrix(0,cv,k)
 mae6 <- matrix(0,cv,k)
 mae7 <- matrix(0,cv,k)
 mae8 <- matrix(0,cv,k)
-m_mae <- list(c(mae1,mae2,mae3,mae4,mae5,mae6,mae7,mae8))
+mae9 <- matrix(0,cv,k)
+
 
 rrse1 <- matrix(0,cv,k)
 rrse2 <- matrix(0,cv,k)
@@ -109,7 +123,8 @@ rrse5 <- matrix(0,cv,k)
 rrse6 <- matrix(0,cv,k)
 rrse7 <- matrix(0,cv,k)
 rrse8 <- matrix(0,cv,k)
-m_rrse <- list(c(rrse1,rrse2,rrse3,rrse4,rrse5,rrse6,rrse7,rrse8))
+rrse9 <- matrix(0,cv,k)
+
 
 al <- list(c(m_rmse,m_rae,m_mae,m_rrse))
 ####################################################################
@@ -211,30 +226,57 @@ rae6[i,j] <- rae(t6,mat_teste[[i]][1])
 mae6[i,j] <- mae(t6,mat_teste[[i]][1])
 rrse6[i,j] <- rrse(t6,mat_teste[[i]][1])
 
-# novamente reolhar quais modelos passaram 
-m6 <- glm(formula = Percent ~ Weigth + Abdomen + Hip + Thigh + Knee + 
-         Forearm, family = inverse.gaussian(link = "1/mu^2"), data=mat_treino[[i]])
-t6 <- predict(m6, newdata=data.frame(mat_teste[[i]]), type = "response")
-rmse6[i,j] <- RMSE(t6,mat_teste[[i]][1])
-rae6[i,j] <- rae(t6,mat_teste[[i]][1])
-mae6[i,j] <- mae(t6,mat_teste[[i]][1])
-rrse6[i,j] <- rrse(t6,mat_teste[[i]][1])
+
+m7 <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
+             Forearm + Wrist, family = inverse.gaussian(link = "inverse"),data=mat_treino[[i]])
+t7 <- predict(m7, newdata=data.frame(mat_teste[[i]]), type = "response")
+rmse7[i,j] <- RMSE(t7,mat_teste[[i]][1])
+rae7[i,j] <- rae(t7,mat_teste[[i]][1])
+mae7[i,j] <- mae(t7,mat_teste[[i]][1])
+rrse7[i,j] <- rrse(t7,mat_teste[[i]][1])
 
 
 m8 <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
-          Forearm + Wrist, family = inverse.gaussian(link = "inverse"), data=mat_treino[[i]])
+             Forearm + Wrist, family = inverse.gaussian(link = "identity"),data=mat_treino[[i]])
 t8 <- predict(m8, newdata=data.frame(mat_teste[[i]]), type = "response")
 rmse8[i,j] <- RMSE(t8,mat_teste[[i]][1])
 rae8[i,j] <- rae(t8,mat_teste[[i]][1])
 mae8[i,j] <- mae(t8,mat_teste[[i]][1])
 rrse8[i,j] <- rrse(t8,mat_teste[[i]][1])
 
+m9 <- glm(formula = Percent ~ Age + Weigth + Neck + Abdomen + Hip + Thigh +
+             Forearm + Wrist, family = inverse.gaussian(link = "log"),data=mat_treino[[i]])
+t9 <- predict(m9, newdata=data.frame(mat_teste[[i]]), type = "response")
+rmse9[i,j] <- RMSE(t9,mat_teste[[i]][1])
+rae9[i,j] <- rae(t9,mat_teste[[i]][1])
+mae9[i,j] <- mae(t9,mat_teste[[i]][1])
+rrse9[i,j] <- rrse(t9,mat_teste[[i]][1])
+
  }
+
+
 }
 
-m_rmse <- appy(c(rmse1,rmse2,rmse3,rmse4,rmse5,rmse6,rmse7,rmse8))
-m_rae <- list(c(rae1,rae2,rae3,rae4,rae5,rae6,rae7,rae8))
-m_mae <- list(c(mae1,mae2,mae3,mae4,mae5,mae6,mae7,mae8))
+m_rmse <- list(rmse1,rmse2,rmse3,rmse4,rmse5,rmse6,rmse7,rmse8,rmse9)
+m_rae <- list(rae1,rae2,rae3,rae4,rae5,rae6,rae7,rae8,rae9)
+m_mae <- list(mae1,mae2,mae3,mae4,mae5,mae6,mae7,mae8,mae9)
+m_rrse <- list(rrse1,rrse2,rrse3,rrse4,rrse5,rrse6,rrse7,rrse8,rrse9)
 
-# O melhor modelo foi o gaussiana inversa.
+mermse <- c(mean(m_rmse[[1]]), mean(m_rmse[[2]]), mean(m_rmse[[3]]), mean(m_rmse[[4]]),
+            mean(m_rmse[[5]]), mean(m_rmse[[6]]), mean(m_rmse[[7]]), mean(m_rmse[[8]]),
+            mean(m_rmse[[9]]))
+merae <- c(mean(m_rae[[1]]), mean(m_rae[[2]]), mean(m_rae[[3]]), mean(m_rae[[4]]),
+            mean(m_rae[[5]]), mean(m_rae[[6]]), mean(m_rae[[7]]), mean(m_rae[[8]]),
+            mean(m_rae[[9]]))
+memae <- c(mean(m_mae[[1]]), mean(m_mae[[2]]), mean(m_mae[[3]]), mean(m_mae[[4]]),
+              mean(m_mae[[5]]), mean(m_mae[[6]]), mean(m_mae[[7]]), mean(m_mae[[8]]),
+              mean(m_mae[[9]]))
+merrse <- c(mean(m_rrse[[1]]), mean(m_rrse[[2]]), mean(m_rrse[[3]]), mean(m_rrse[[4]]),
+            mean(m_rrse[[5]]), mean(m_rrse[[6]]), mean(m_rrse[[7]]), mean(m_rrse[[8]]),
+            mean(m_rrse[[9]]))
+which(mermse == min(mermse))
+which(merae == min(merae))
+which(memae == min(memae))
+which(merrse == min(merrse))
 
+# O melhor modelo foi o com distribuição Gamma com função de ligação identidade.
