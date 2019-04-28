@@ -50,7 +50,7 @@ modelo3 <- glm(formula = Survived ~ Pclass + Sex + Age + SibSp,
                family = binomial(link = "logit"), data=banco)
 #Logistic Regression
 library(xtable)
-xtablesummary((modelo3))
+xtable(summary(modelo3))
 
 # Seleão de variáveis realizada e o modelo final ficou com 4 variáveis 
 # explicativas mais o intercepto.
@@ -90,5 +90,90 @@ ROC(form = Survived ~ Pclass + Sex + Age + SibSp,plot="ROC",MX=FALSE)
 library(SDMTools)
 confusion.matrix(Survived, fit, threshold = 0.5)
 
-# NÃO FUNCIONOU ESSE PACOTE NO MEU PC,ENTÃO NEM SEI A SAÍDA QUANTO MAIS O QUE 
-# COMENTAR DELA.
+# Calcule a sua probabilidade de sobreviver ao naufrágio do Titanic.
+# Como carcular isso?
+
+#######################################################################
+# Avalaindo o poder preditivo do modelo.
+#######################################################################
+rmse <- function(y,y_hat){ sqrt(mean((y - y_hat)^2)) }
+rae <- function(y, y_hat){ sum(abs(y_hat - y)) / sum(abs(mean(y) - y)) }
+rrse <- function(y, y_hat){ sum((y_hat - y)^2) / sum((mean(y) - y)^2) }
+mae <- function(y, y_hat){ sum( abs(y - y_hat)) /length(y) }
+################################################################
+# A minha repetição começa aqui.
+################################################################
+k <- 10
+cv <- 10
+
+# Matrizes que vao receber as méidas das estimativas de rood mean square error
+# a quantidade dessas matrizes 
+rmse1 <- matrix(0,cv,k)
+rae1 <- matrix(0,cv,k)
+mae1 <- matrix(0,cv,k)
+rrse1 <- matrix(0,cv,k)
+
+####################################################################
+# Contador para rodar as repetições
+for(j in 1:k){
+  
+  # Separando os 10 folds.
+  require(caret)
+  flds <- createDataPartition(Percent, times = cv, p = 0.2, list = TRUE)
+  
+  ################################################################
+  # Lista com os elementos separados para treino.
+  ################################################################
+  train1 <- banco[-flds[[1]], ]
+  train2 <- banco[-flds[[2]], ]
+  train3 <- banco[-flds[[3]], ]
+  train4 <- banco[-flds[[4]], ]
+  train5 <- banco[-flds[[5]], ]
+  train6 <- banco[-flds[[6]], ]
+  train7 <- banco[-flds[[7]], ]
+  train8 <- banco[-flds[[8]], ]
+  train9 <- banco[-flds[[9]], ]
+  train10 <- banco[-flds[[10]], ]
+  mat_treino <- list(train1, train2, train3, train4, train5, train6, train7, train8, train9, train10)
+  
+  # Lista com os elementos separados para teste.
+  teste1 <- banco[flds[[1]], ]
+  teste2 <- banco[flds[[2]], ]
+  teste3 <- banco[flds[[3]], ]
+  teste4 <- banco[flds[[4]], ]
+  teste5 <- banco[flds[[5]], ]
+  teste6 <- banco[flds[[6]], ]
+  teste7 <- banco[flds[[7]], ]
+  teste8 <- banco[flds[[8]], ]
+  teste9 <- banco[flds[[9]], ]
+  teste10 <- banco[flds[[10]], ]
+  mat_teste <- list(teste1, teste2, teste3, teste4, teste5, teste6, teste7, teste8, teste9, teste10)
+
+  t1 <- NULL
+  
+  ################################################################
+  # Contador para rodar os folds
+  for(i in 1:cv){
+    
+    m1 <- glm(formula = Survived ~ Pclass + Sex + Age + SibSp,
+                         family = binomial(link = "logit"), data=banco)
+    t1 <- predict(m1, newdata=data.frame(mat_teste[[i]]), type = "response")
+    rmse1[i,j] <- RMSE(t1,mat_teste[[i]][1])
+    rae1[i,j] <- rae(t1,mat_teste[[i]][1])
+    mae1[i,j] <- mae(t1,mat_teste[[i]][1])
+    rrse1[i,j] <- rrse(t1,mat_teste[[i]][1])
+  }
+  
+  
+}
+
+
+mermse <- mean(rmse1)
+merae <- mean(rae1)
+memae <- mean(mae1)
+merrse <- mean(rrse1)
+
+mermse
+merae
+memae
+merrse
